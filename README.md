@@ -1,4 +1,4 @@
-# fly-project-weeks
+# fly-project-weeks-bonsai
 Bonsai workflow for real-time position tracking of Drosophila flies and closed-loop controlled visual stimuli projection using shaders.
 
 
