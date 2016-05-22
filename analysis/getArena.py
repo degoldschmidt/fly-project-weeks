@@ -160,9 +160,15 @@ Sizesb = np.array(Sizesb)
 Types = np.array(Types)
 Names = np.array(Names)  
     
-data = np.zeros(Names.size, dtype=[('Name', 'S6'), ('ID', 'S6'), ('x', int), ('y', int), ('size', int), ('secsize', int)])
-data['Name'] = Names
-data['ID'] = Types
+mydt = np.dtype([ ('name', np.str_, 16), 
+                 ('id', np.str_, 1), 
+                 ('x', np.int),
+                 ('y', np.int),
+                 ('size', np.int),
+                 ('secsize', np.int) ] )
+data = np.zeros(Names.size, dtype=mydt)
+data['name'] = Names
+data['id'] = Types
 data['x'] = Xvals
 data['y'] = Yvals
 data['size'] = Sizes
