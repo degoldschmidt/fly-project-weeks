@@ -175,5 +175,5 @@ data['size'] = Sizes
 data['secsize'] = Sizesb
 print(data)
 outfile = "../data/processed/arena.cfg"
-np.savetxt(outfile, data, delimiter=' ', newline='\n', fmt='%16s %1s %u %u %u %u', header='#X[px] #Y[px] #Size[px] #Type #Name')
+np.savetxt(outfile, data, delimiter=' ', newline='\n', fmt='%16s %1s %u %u %u %u', header='#Name #Type #X[px] #Y[px] #Size[px] #SizeB[px]')
 #

@@ -34,6 +34,8 @@ y0 = toSI(params['y']-params['size'], params['y'])
 y1 = toSI(params['y']+params['size'], params['y'])
 arena=plt.Circle( (toSI(params['x'],params['x']), toSI(params['y'],params['y']) ), toSI(params['size'],0),color='g',fill=False)
 
+x = toSI(data[:,1],params['x'])
+y = toSI(data[:,2],params['y'])
 
 fig = figure(figsize=(8.8,8.4))
 axes = plt.gca()
@@ -42,7 +44,7 @@ plt.ylim([y0+(y0/10),y1+(y1/10)])
 lbfs = 16
 plt.xlabel('x [mm]', fontsize=lbfs)
 plt.ylabel('y [mm]', rotation='horizontal', fontsize=lbfs)
-pplt.plot(toSI(data[:,1],params['x']), toSI(data[:,2],params['y']), 'k.', markersize=2)
+pplt.plot(x, y, 'k.', markersize=2)
 axes.set_aspect('equal', adjustable='box')
 axes.xaxis.labelpad = 20
 axes.yaxis.labelpad = 20
@@ -51,3 +53,29 @@ axes.patch.set_facecolor('ghostwhite')
 fig = plt.gcf()
 axes.add_artist(arena)
 fig.savefig("../plots/traj.pdf", dpi=900)
+
+print(data.shape[0], "data points processed.")
+dt = 1/120
+outdata = np.zeros((data.shape[0],9))
+outdata[:,0] = data[:,0]
+outdata[:,1] = x
+outdata[:,2] = y
+
+dx = np.diff(x)
+dx.resize((dx.shape[0]+1,))
+dy = np.diff(y)
+dy.resize((dy.shape[0]+1,))
+
+outdata[:,3] = np.arctan2(dy, dx)                                       ### PHI
+
+outdata[:-1,4] = np.diff(outdata[:,3])                                  ### dPHI
+outdata[:,4] /= dt
+outdata[:,5] = np.sqrt(dx*dx + dy*dy)/dt                                ### forward speed
+outdata[:-1,6] = np.diff(outdata[:,5])                                    ### forwardd acceleration
+outdata[:,6] /= dt
+outdata[:,7] = np.sqrt(x*x+y*y)                                         ### distance from center
+outdata[:,8] = np.arctan2(y, x)                                         ### angle of center-fly wrt axis
+
+
+outfile = "../data/processed/traj_process.dat"
+np.savetxt(outfile, outdata, delimiter=' ', newline='\n', fmt='%3.7f %3.6f %3.6f %3.6f %3.6f %3.6f %3.6f %3.6f %3.6f ', header='#t[s] #X[mm] #Y[mm] #phi[rad] #dphi[rad/s] #v[mm/s] #a[mm/s^2] #r[mm] #theta[rad] ')
