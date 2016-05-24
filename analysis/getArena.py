@@ -119,12 +119,14 @@ while not done:
             elif event.key == pg.K_RIGHT: mycursor.setBBigger()
             elif event.key == pg.K_LEFT: mycursor.setSSmaller()
             elif event.key == pg.K_r: 
-                mycursor.name = 'r'
-                mycursor.size *= 2
+                if mycursor.typen == 'c':
+                    mycursor.size *= 2
+                mycursor.typen = 'r'
                 mycursor.setSquare()
             elif event.key == pg.K_c: 
-                mycursor.name = 'c'
-                mycursor.size = int(mycursor.size/2)
+                if mycursor.typen == 'r':
+                    mycursor.size = int(mycursor.size/2)
+                mycursor.typen = 'c'
             elif event.key == pg.K_q: mycursor.setSquare()
             elif event.key == pg.K_w: mycursor.setTaller()
             elif event.key == pg.K_s: mycursor.setShorter()
